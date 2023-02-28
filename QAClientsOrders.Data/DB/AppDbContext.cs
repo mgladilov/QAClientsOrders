@@ -1,13 +1,15 @@
+using System.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using QAClientsOrders.Data.Models;
+using DbContext = Microsoft.EntityFrameworkCore.DbContext;
 
 namespace QAClientsOrders.Data.DB;
 
 public class AppDbContext : DbContext
 {
-    public DbSet<Client> Clients { get; set; }
-    public DbSet<Order> Orders { get; set; }
+    public Microsoft.EntityFrameworkCore.DbSet<Client> Clients { get; set; }
+    public Microsoft.EntityFrameworkCore.DbSet<Order> Orders { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -21,6 +23,15 @@ public class AppDbContext : DbContext
 
         optionsBuilder
             .UseSqlServer(connectionString);
+    }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Client>()
+            .HasMany(c => c.Orders)
+            .WithOne(o => o.Client)
+            .HasForeignKey(o => o.ClientID)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     public void Seed()

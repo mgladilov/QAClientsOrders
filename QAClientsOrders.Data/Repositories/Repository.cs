@@ -8,7 +8,7 @@ namespace QAClientsOrders.Data.Repositories;
 public class Repository<T> : IRepository<T> 
     where T : BaseEntity
 {
-    protected readonly AppDbContext _context;
+    protected static AppDbContext _context;
 
     public Repository(AppDbContext context)
     {

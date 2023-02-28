@@ -7,4 +7,6 @@ public class Client : BaseEntity
     public string PhoneNum { get; set; }
     public int OrderAmount { get; set; }
     public DateTime DateAdd { get; set; }
+    
+    public virtual ICollection<Order> Orders { get; set; }
 }
